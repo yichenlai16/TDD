@@ -1,4 +1,5 @@
 ﻿using WebApplication1.Repo;
+using WebApplication1.Models;
 
 namespace WebApplication1.Services;
 
@@ -6,6 +7,23 @@ public class BudgetServices(IBudgetRepo mockRepo)
 {
     public decimal Query(DateTime startDate, DateTime endDate)
     {
-        throw new NotImplementedException();
+        var budgets = mockRepo.GetAll();
+        var totalDays = (endDate - startDate).Days;
+        decimal totalAmount = 0;
+
+        for (var date = startDate; date <= endDate; date = date.AddDays(1))
+        {
+            var yearMonth = date.ToString("yyyyMM");
+            var budget = budgets.FirstOrDefault(b => b.YearMonth == yearMonth);
+            
+            if (budget != null)
+            {
+                var daysInMonth = DateTime.DaysInMonth(date.Year, date.Month);
+                var dailyAmount = (decimal)budget.Amount / daysInMonth;
+                totalAmount += dailyAmount;
+            }
+        }
+
+        return totalAmount;
     }
 }

@@ -22,11 +22,11 @@ public class BudgetServiceTests
     public void Query_ShouldReturn20_WhenQueryingJuly2025Range()
     {
         // Arrange
-        _mockRepo.GetAll(new List<Budget>
+        _mockRepo.GetAll().Returns(new List<Budget>
         {
             new Budget { YearMonth = "202507", Amount = 310 }
         });
-        
+
         var startDate = new DateTime(2025, 7, 1);
         var endDate = new DateTime(2025, 7, 2);
 
