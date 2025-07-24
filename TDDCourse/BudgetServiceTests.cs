@@ -36,4 +36,23 @@ public class BudgetServiceTests
         // Assert
         result.Should().Be(20m);
     }
+
+    [Test]
+    public void Query_ShouldReturn10_WhenQueryingSameDayInJuly2025()
+    {
+        // Arrange
+        _mockRepo.GetAll().Returns(new List<Budget>
+        {
+            new Budget { YearMonth = "202507", Amount = 310 }
+        });
+
+        var startDate = new DateTime(2025, 7, 1);
+        var endDate = new DateTime(2025, 7, 1);
+
+        // Act
+        var result = _budgetService.Query(startDate, endDate);
+
+        // Assert
+        result.Should().Be(10m);
+    }
 }
